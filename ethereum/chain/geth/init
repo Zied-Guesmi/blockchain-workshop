@@ -1,3 +1,0 @@
-#!/bin/bash
-
-geth --datadir ./datadir init genesis.json
