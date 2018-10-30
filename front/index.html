@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Blockchain workshop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+</head>
+<body>
+
+    <div id="header" class="header form">
+        <h4>Name:&nbsp;&nbsp; <b id="tkn-name"></b> </h4>
+        <h4>Symbol:&nbsp;&nbsp; <b id="tkn-symbol"></b> </h4>
+        <h4>Total supply:&nbsp;&nbsp; <b id="tkn-supply"></b> </h4>
+        <h4>Block number:&nbsp;&nbsp; <b id="block-number"></b> </h4>
+    </div>
+
+    <hr class="header" style="background:#F9F9F9">
+
+    <div class="container">
+        <table>
+            <tr>
+            <td><form action="" method="post" class="form" id="accounts">
+                <h3>List of accounts & balances</h3>
+                <!-- <fieldset>
+                    <div style="color: black">0x....</div>                    
+                    <input placeholder="balance" type="text" tabindex="1" readonly>
+                </fieldse>
+                <fieldset>
+                    <div style="color: black">0x....</div>
+                    <input placeholder="balance" type="text" tabindex="1">
+                </fieldset>
+                <fieldset>
+                    <div style="color: black">0x....</div>
+                    <input placeholder="balance" type="text" tabindex="1">
+                </fieldset>
+                <fieldset>
+                    <div style="color: black">0x....</div>
+                    <input placeholder="balance" type="text" tabindex="1">
+                </fieldset> -->
+                </form></td>
+
+            <td><form action="" method="post" class="form" id="transfer">
+                <h3>Transfer TKN</h3>
+                <!-- <h4>Send or allow others to send</h4> -->
+                <fieldset>
+                    <div style="color: black">From</div>                    
+                    <input placeholder="0x....." type="text" tabindex="1" required>
+                </fieldset>
+                <fieldset>
+                    <div style="color: black">To</div>                    
+                    <input placeholder="0x....." type="text" tabindex="1" required>
+                </fieldset>
+                    <fieldset>
+                    <div style="color: black">Amount</div>
+                    <input placeholder="Exp: 30 (TKN)" type="text" tabindex="2" required>
+                </fieldset>
+                <fieldset>
+                    <div style="color: black">Password</div>
+                    <input placeholder="" type="text" tabindex="2" required>
+                    </fieldset>
+                <fieldset>
+                <button name="send" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+                </fieldset>
+            </form></td>
+            </tr>
+        </table>                        
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script src="js/main.js"></script>
+
+</html>
