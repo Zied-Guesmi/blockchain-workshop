@@ -2,10 +2,15 @@
 
 window.onload = init;
 
+document.getElementById("transfer").addEventListener("submit", function(event) {
+    event.preventDefault();
+    sendToken();
+})
+
 const web3 = setupWeb3();
-console.log("web3 setup")
+console.log(web3)
 const contract = loadContractFromAddress("0x23c5243787c606bb24bf6998ecb4f80d95c3c32c");
-console.log("contract loaded");
+// console.log("contract loaded");
 
 function init() {
     loadTokenInfos();
@@ -304,21 +309,24 @@ function loadAccountsAndBalances() {
     document.getElementById('accounts').innerHTML += html;    
 }
 
-function balanceOf(address) {
-    return contract.balanceOf(address).c[0]
+function sendToken()  {
+    let from = document.getElementById('from').value;
+    let to = document.getElementById('to').value;
+    let amount = parseInt(document.getElementById('amount').value);
+    let password = document.getElementById('password').value;
+    transfer(from, to, amount);
+    // web3.personal.unlockAccount(from, password, 60, (err, res) => {
+    //     transfer(from, to, amount);
+    // });
 }
 
-function transfer(from, to, amount, password) {
+function balanceOf(address) {
+    return contract.balanceOf(address).c[0];
+}
 
-    // read input (from to amount password)
-    // web3.personal.unlockAccount(password)
-    contractInstance.transferFrom(from, to, amount, (err, res) => {
-        if(err) {
-            // throw
-        }
-        // create a modal to say it's okey
-        
-    })
+function transfer(from, to, amount) {
+    console.log(balanceOf(to));
+    let tx = contract.transfer(to, amount);
 }
 
 function handleError(err) {

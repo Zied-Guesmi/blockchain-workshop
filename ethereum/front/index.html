@@ -24,24 +24,24 @@
                 <h3>List of accounts & balances</h3>
                 </form></td>
 
-            <td><form action="" method="post" class="form" id="transfer">
+            <td><form class="form" id="transfer">
                 <h3>Transfer TKN</h3>
                 <!-- <h4>Send or allow others to send</h4> -->
                 <fieldset>
                     <div style="color: black">From</div>                    
-                    <input placeholder="0x....." type="text" tabindex="1" required>
+                    <input placeholder="0x....." type="text" id="from" value="0xd97e5e5129525f840dc38b605dab56e97d4b8283" required>
                 </fieldset>
                 <fieldset>
                     <div style="color: black">To</div>                    
-                    <input placeholder="0x....." type="text" tabindex="1" required>
+                    <input placeholder="0x....." type="text" id="to" value="0x57ca4570fe057bea16ce0f918995ad018b7504f6" required>
                 </fieldset>
                     <fieldset>
                     <div style="color: black">Amount</div>
-                    <input placeholder="Exp: 30 (TKN)" type="text" tabindex="2" required>
+                    <input placeholder="Exp: 30 (TKN)" type="text" id="amount" value="700" required>
                 </fieldset>
                 <fieldset>
                     <div style="color: black">Password</div>
-                    <input placeholder="" type="text" tabindex="2" required>
+                    <input placeholder="" type="text" id="password" value="whatever" required>
                     </fieldset>
                 <fieldset>
                 <button name="send" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
