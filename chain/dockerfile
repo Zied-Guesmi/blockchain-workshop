@@ -1,0 +1,21 @@
+FROM ethereum/client-go
+
+COPY ./genesis.json /genesis.json
+COPY ./password.txt /password.txt
+
+# init geth
+RUN geth --datadir /datadir init /genesis.json && rm /genesis.json
+
+# create accounts
+RUN geth --datadir /datadir account new --password /password.txt && \
+    geth --datadir /datadir account new --password /password.txt && \
+    geth --datadir /datadir account new --password /password.txt && \
+    rm /password.txt
+
+EXPOSE 8545 30303
+
+ENTRYPOINT nohup geth --datadir /datadir \
+            --networkid 1337  \
+            --gasprice '1' \
+            --rpc --rpcaddr '0.0.0.0' --rpcport 8545 --rpcapi 'personal,db,eth,net,web3,txpool,miner' \
+            --mine --minerthreads 2
