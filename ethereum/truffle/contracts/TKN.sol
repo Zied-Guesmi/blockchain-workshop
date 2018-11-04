@@ -1,64 +1,62 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.24;
 
 import "./ERC20.sol";
 
 contract TKN is ERC20 {
 
-    string public symbol;   // "TKN"
-    string public name;     // "Token"
-    uint8 public decimals;  // 18
+    string public constant symbol       = "TKN";
+    string public constant name         = "Token";
+    uint8 public constant decimals      = 18;
+    uint private constant _totalSupply  = 3000 * 10 ** uint(decimals);
 
-    uint public totalSupply;
-    mapping(address => uint) public balanceOf_;
-    mapping(address => mapping(address => uint)) public allowance;
+    mapping(address => uint) internal balances;
+    mapping(address => mapping(address => uint)) internal allowed;
 
-    constructor(string _name, string _symbol, uint8 _decimals, uint _totalSupply) public {
-        name = _name;
-        symbol = _symbol;
-        decimals = _decimals;
-        totalSupply = _totalSupply * 10 ** uint256(_decimals);
-        balanceOf_[msg.sender] = _totalSupply;
+    // event Transfer(address indexed from, address indexed to, uint tokens);
+    // event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
+
+    constructor() public {
+        balances[msg.sender] = _totalSupply;
     }
 
     function totalSupply() public view returns (uint) {
-        return totalSupply;
+        return _totalSupply;
     }
 
-    function balanceOf(address _address) public view returns (uint balance) {
-        return balanceOf_[_address];
+    function balanceOf(address _address) public view returns (uint) {
+        return balances[_address];
     }
 
     function transfer(address _to, uint _value) public returns (bool success) {
-        _transer(msg.sender, _to, _value);
+        _transfer(msg.sender, _to, _value);
         return true;
     }
 
     function transferFrom(address _from, address _to, uint _value) public returns (bool success) {
-        require(_value <= allowance[_from][msg.sender]);
-        allowance[_from][msg.sender] -= _value;
-        _transer(_from, _to, _value);
+        require(_value <= allowed[_from][msg.sender]);
+        allowed[_from][msg.sender] -= _value;
+        _transfer(_from, _to, _value);
         return true;
     }
 
-    function allowance(address _tokenOwner, address _spender) public view returns (uint remaining) {
-        return allowance[_tokenOwner][_spender];
-    }
-
     function approve(address _spender, uint _value) public returns (bool success) {
-        allowance[msg.sender][_spender] = _value;
+        allowed[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
-    function _transer(address _from, address _to, uint _value) internal {
-        require(_to != 0x0);
-        require(0 < _value && _value <= balanceOf_[_from]);
-        balanceOf_[_from] -= _value;
-        balanceOf_[_to] += _value;
-        emit Transfer(_from, _to, _value);
+    function allowance(address _owner, address _spender) public view returns (uint remaining) {
+        return allowed[_owner][_spender];
     }
 
-    // event Transfer(address indexed from, address indexed to, uint tokens);
-    // event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
+    function _transfer(address _from, address _to, uint _value) internal {
+        require(_to != 0);
+        require(_to != _from);
+        require(0 < _value && _value <= balances[_from]);
+
+        balances[_from] -= _value;
+        balances[_to] += _value;
+        emit Transfer(_from, _to, _value);
+    }
 
 }

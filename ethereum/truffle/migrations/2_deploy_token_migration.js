@@ -2,7 +2,7 @@
 var TKN = artifacts.require("./TKN.sol");
 
 module.exports = function(deployer) {
-  return deployer.deploy(TKN, "Token", "TKN", 18, 30000000)
+  return deployer.deploy(TKN)
     .then(() => TKN.deployed())
     .then(instance => {
       console.log("TKN deployed at address: " + instance.address);
