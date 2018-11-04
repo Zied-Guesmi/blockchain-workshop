@@ -1,3 +1,3 @@
 # workshops
 
-I keep track of my workshops in this repository.
+I keep track of my workshops' code in this repository.
