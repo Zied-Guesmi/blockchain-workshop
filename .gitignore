@@ -1,2 +1,3 @@
 ethereum/chain/geth
-ethereum/front/node_modules
+ethereum/ui/node_modules
+ethereum/ganache/ganache.log
