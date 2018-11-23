@@ -3,6 +3,7 @@
 // TODO: watch block number
 
 window.onload = init;
+let flag = false;
 
 const web3 = setupWeb3();
 function setupWeb3() {
@@ -14,7 +15,7 @@ function setupWeb3() {
     }
 }
 
-const contract = loadContractFromAddress("0xe339d92767f75974c4d6e12a1a4af40f3cf86827");
+const contract = loadContractFromAddress("0x0bad635ec8099ceb72603fa6ef618ac2405b4a37");
 function loadContractFromAddress(address) {
     const abi = [
         {
@@ -271,6 +272,7 @@ function init() {
     loadBlockchainInfos()
     loadTokenInfos();
     loadAccountsAndBalances();
+    watchContractEvents();
     watchBlockchainEvents();
     addEventListeners()
 }
@@ -279,7 +281,6 @@ function loadBlockchainInfos() {
     document.getElementById("block-number").innerHTML = web3.eth.blockNumber;
     document.getElementById("number-of-peers").innerHTML = web3.net.peerCount;
     document.getElementById("gas-price").innerHTML = web3.fromWei(web3.eth.gasPrice, 'ether');
-    document.getElementById("default-account").innerHTML = web3.eth.defaultAccount;
     document.getElementById("default-acc").value = web3.eth.defaultAccount;
 }
 
@@ -305,26 +306,58 @@ function loadAccountsAndBalances() {
     document.getElementById('accounts-list').innerHTML = html;    
 }
 
-function watchBlockchainEvents() {
+function watchContractEvents() {
     const transferEvent = contract.Transfer();
     transferEvent.watch(function(err, res) {
+        console.log('transfer fired')
         if (err) {
-            handleError(err)           
+            showModal(err);
         }
-        console.log("Transfer event fired")
-        loadAccountsAndBalances()
+        let msg = `Token sent & transaction mined ! <br>
+                    <b>Tx hash:</b> ${res.transactionHash} <br>
+                    <b>Block number:</b> ${res.blockNumber}`;
+        if (flag) {
+            showModal(msg);
+            loadAccountsAndBalances();
+        } else {
+            flag = true;
+        }
+    })
+
+    const approvalEvent = contract.Approval();
+    approvalEvent.watch(function(err, res) {
+        console.log('approval fired')
+        if (err) {
+            showModal(err);
+        }
+        let msg = `Spender approved & transaction mined ! <br>
+                    <b>Tx hash:</b> ${res.transactionHash} <br>
+                    <b>Block number:</b> ${res.blockNumber}`;
+        if (flag) {
+            showModal(msg);
+        } else {
+            flag = true;
+        }
     })
 }
 
+function watchBlockchainEvents() {
+    // watch block number
+}
+
 function addEventListeners() {
+    document.getElementById("change-account").addEventListener("click", function(event) {
+        web3.eth.defaultAccount = document.getElementById("default-acc").value;
+    })
+
     document.getElementById("send-token").addEventListener("submit", function(event) {
         event.preventDefault();
         sendToken();
     })
-    
-    document.getElementById("change-account").addEventListener("click", function(event) {
-        web3.eth.defaultAccount = document.getElementById("default-acc").value;
-        document.getElementById("default-account").innerHTML = web3.eth.defaultAccount;
+
+    document.getElementById("allow").addEventListener("submit", function(event) {
+        event.preventDefault();
+        approve();
     })
 }
 
@@ -332,19 +365,30 @@ function sendToken()  {
     const from = document.getElementById('from').value;
     const to = document.getElementById('to').value;
     const amount = parseInt(document.getElementById('amount').value);
-    // const password = document.getElementById('password').value;
 
-    if (from !== '') {
-        token.transferFrom(from, to, amount);
+    if (from !== 'default') {
+        try { token.transferFrom(from, to, amount) }
+        catch (err) { showModal(err) }
+
     } else {
-        token.transfer(to, amount);
+        try { token.transfer(to, amount) }
+        catch (err) { showModal(err) }
     }
 }
 
-function handleError(err) {
-    console.log('error: ')
-    console.log(err)
-    return;
+function approve()  {
+    const spender = document.getElementById('allowed-spender').value;
+    const amount = parseInt(document.getElementById('allowed-amount').value);
+
+    try { 
+        token.approve(spender, amount)
+    }
+    catch (err) { showModal(err) }
+}
+
+function showModal(html) {
+    document.getElementById('modal-content').innerHTML = html;
+    document.getElementById('modal').style.display = 'block';
 }
 
 // web3.personal.unlockAccount(from, password, 60, (err, res) => {
