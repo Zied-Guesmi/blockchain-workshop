@@ -25,7 +25,7 @@
             <p class="w3-text-grey">Block number: <b id="block-number" style="color:red">...</b> </p>
             <p class="w3-text-grey">Number of peers: <b id="number-of-peers" style="color:red">...</b> </p>
             <p class="w3-text-grey">Gas price: <b id="gas-price" style="color:red">...</b> </p>
-            <p class="w3-text-grey">Default account: <b id="default-account" style="color:red">...</b> </p>
+            <!-- <p class="w3-text-grey">Default account: <b id="default-account" style="color:red">...</b> </p> -->
 
             <h3><b>Token infos</b></h3>
             <p class="w3-text-grey">Name: <b id="token-name" style="color:red">...</b> </p>
@@ -63,8 +63,6 @@
 
         <!-- Form Section -->
         <div class="w3-container w3-padding-large w3-grey">
-            <h4 id="contact"><b>Transfer TKN</b></h4>
-            <hr class="w3-opacity">
             <div class="w3-row-padding">
                 <div class="w3-third">
                     Default account: <input class="w3-input w3-border" type="text" id="default-acc">
@@ -73,18 +71,35 @@
                     Change
                 </button>
             </div>
+            <h4 id="contact"><b>Transfer TKN</b></h4>
+            <hr class="w3-opacity">
             <form id="send-token" target="_blank" class="w3-row-padding w3-section">
                 <div class="w3-third">
-                    From: <input class="w3-input w3-border" type="text" id="from">
+                    From: <input class="w3-input w3-border" type="text" id="from" value="default">
                 </div>
                 <div class="w3-third">
                     To: <input class="w3-input w3-border" type="text" id="to" required>
                 </div>
-                <div class="w3-third">
+                <div class="w3-quarter">
                     Amount: <input class="w3-input w3-border" type="number" id="amount" required>
                 </div>
                 <button type="submit" class="w3-button w3-black w3-margin-bottom w3-margin-top">
                     Send <i class="fa fa-paper-plane w3-margin-right"></i>
+                </button>
+            </form>
+        </div>
+        <div class="w3-container w3-padding-large w3-grey">
+            <h4 id="contact"><b>Allow others to transfer your tokens </b></h4>
+            <hr class="w3-opacity">
+            <form id="allow" target="_blank" class="w3-row-padding w3-section">
+                <div class="w3-third">
+                    Spender: <input class="w3-input w3-border" type="text" id="allowed-spender">
+                </div>
+                <div class="w3-third">
+                    Amount: <input class="w3-input w3-border" type="number" id="allowed-amount" required>
+                </div>
+                <button type="submit" class="w3-button w3-black w3-margin-bottom w3-margin-top">
+                    Approve <i class="fa fa-paper-plane w3-margin-right"></i>
                 </button>
             </form>
         </div>
@@ -94,21 +109,37 @@
     <!-- End page content -->
     </div>
 
-    <script>
-        // Script to open and close sidebar
-        function w3_open() {
-            document.getElementById("mySidebar").style.display = "block";
-            document.getElementById("myOverlay").style.display = "block";
-        }
-        
-        function w3_close() {
-            document.getElementById("mySidebar").style.display = "none";
-            document.getElementById("myOverlay").style.display = "none";
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
-    <script src="js/main.js"></script>
+    <!-- modal -->
+    <div id="modal" class="w3-modal">
+        <div class="w3-modal-content w3-animate-top w3-card-4">
+            <header class="w3-container"> 
+                <span onclick="document.getElementById('modal').style.display='none'" 
+                class="w3-button w3-display-topright">&times;</span>
+                <h2></h2>
+            </header>
+            <div class="w3-container">
+                <p id="modal-content">sending transaction..</p>
+            </div>
+            <!-- <footer class="w3-container w3-teal">
+                <p>Modal Footer</p>
+            </footer> -->
+        </div>
+    </div>
 
 </body>
+<script>
+    // Script to open and close sidebar
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("myOverlay").style.display = "block";
+    }
+    
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("myOverlay").style.display = "none";
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script src="js/main.js"></script>
 </html>
