@@ -35,6 +35,13 @@ Open the index.html file and start trading tokens !!
 
 ## Install ethreum-go client (geth)
 
+    # init geth
+    geth --datadir ./datadir init ./genesis.json
+
+    # create accounts
+    geth --datadir ./datadir account new --password ./password.txt
+
+    # start the node
     geth --datadir ./datadir \
         --networkid 1337  \
         --gasprice '1' \
